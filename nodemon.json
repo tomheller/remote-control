@@ -1,0 +1,7 @@
+{
+  "verbose": "true",
+  "restartable": "rs",
+  "ignore": ["_js/**/*.js", "_scss/**/*.scss", "db.json"],
+  "ignoreRoot": [".git", "node_modules", "bower_components", ".sass-cache", "session", "public", "_js", "_tasks", "db"],
+  "ext": "js hbs css"
+}
