@@ -20,6 +20,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+require('../socket')(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -87,5 +88,4 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  require('../socket')(server);
 }
