@@ -13,7 +13,6 @@ const getPairing = (socketID) => {
   }
 }
 
-
 const attachListeners = (socket) => {
   console.log('connected server');
 
