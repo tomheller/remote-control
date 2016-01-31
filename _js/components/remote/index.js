@@ -23,7 +23,8 @@ const attachButtonListeners = () => {
   controlSurfaces.horn = document.getElementById('horn');
   controlSurfaces.gas = document.getElementById('gas');
 
-  controlSurfaces.horn.addEventListener('click', (e) => sendEvent('controlSurfaceInput', 'horn'));
+  controlSurfaces.horn.addEventListener('touchstart', (e) => sendEvent('controlSurfaceInput', 'horn_start'));
+  controlSurfaces.horn.addEventListener('touchend', (e) => sendEvent('controlSurfaceInput', 'horn_end'));
   controlSurfaces.brake.addEventListener('touchstart', (e) => sendEvent('controlSurfaceInput', 'brake_start'));
   controlSurfaces.brake.addEventListener('touchend', (e) => sendEvent('controlSurfaceInput', 'brake_end'));
   controlSurfaces.gas.addEventListener('touchstart', (e) => sendEvent('controlSurfaceInput', 'gas_start'));

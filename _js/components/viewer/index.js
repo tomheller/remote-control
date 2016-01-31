@@ -14,7 +14,16 @@ const attachListeners = () => {
   });
 
   socket.on('doAction', (a) => {
-    alert(a);
+    switch (a) {
+      case 'horn_start':
+        horn.start();
+        break;
+      case 'horn_end':
+        horn.end();
+        break
+      default:
+
+    }
   });
 };
 
@@ -22,6 +31,8 @@ const init = () => {
   console.log('init viewer');
   socket = io(window.location.origin);
   socket.on('connect', (e) => attachListeners());
+  //init horn
+  horn.init();
 };
 
 

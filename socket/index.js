@@ -34,7 +34,7 @@ const attachListeners = (socket) => {
 
   socket.on('controlSurfaceInput', (e) => {
     var pairing = getPairing(socket.id);
-    return socket.to(pairing.viewer).emit('doAction', 'aother');
+    return socket.to(pairing.viewer).emit('doAction', e);
   });
 
   socket.on('orientationInput', (e) => {
