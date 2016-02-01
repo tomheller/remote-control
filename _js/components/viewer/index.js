@@ -10,7 +10,7 @@ const attachListeners = () => {
 
   socket.emit('identify', {
     type: 'viewer',
-    mappingID: 1
+    mappingID: 1,
   });
 
   socket.on('doAction', (a) => {
@@ -20,22 +20,21 @@ const attachListeners = () => {
         break;
       case 'horn_end':
         horn.end();
-        break
+        break;
       default:
 
     }
   });
 };
 
-const init = () => {
+const initialize = () => {
   console.log('init viewer');
   socket = io(window.location.origin);
-  socket.on('connect', (e) => attachListeners());
-  //init horn
+  socket.on('connect', () => attachListeners());
   horn.init();
 };
 
 
 module.exports = {
-  init: init
+  init: initialize,
 };
