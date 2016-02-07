@@ -4,20 +4,10 @@ let scene;
 let camera;
 let renderer;
 let controlledObj;
-let mouseX = 0;
-let mouseY = 0;
-const windowHalfX = window.innerWidth / 2;
-const windowHalfY = window.innerHeight / 2;
+let manager = null;
 
 
-const attachListners = () => {
-  /*
-  document.addEventListener('mousemove', (evt) => {
-    mouseX = (evt.clientX - windowHalfX) / 2;
-    mouseY = (evt.clientY - windowHalfY) / 2;
-  });
-  */
-};
+const attachListners = () => {};
 
 
 const initialize = () => {
@@ -29,17 +19,32 @@ const initialize = () => {
   light.position.set( 1, 1, 0 );
   scene.add(light);
 
-  const manager = new THREE.LoadingManager();
+  manager = new THREE.LoadingManager();
   manager.onProgress = (item, loaded, total) => {
     return console.log(item, loaded, total);
   };
 
-  const groundGeo = new THREE.PlaneGeometry( 20, 20, 1 );
-  const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+  /* create ground plane */
+  const groundGeo = new THREE.PlaneGeometry( 500, 500, 1 );
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+    side: THREE.DoubleSide,
+  });
   const groundMesh = new THREE.Mesh(groundGeo, material);
   groundMesh.rotation.x = Math.PI / 2;
   groundMesh.position.y = 0;
-  console.log(groundMesh.rotation.x)
+
+  /* loading texture */
+  const loader = new THREE.ImageLoader( manager );
+  const texture = new THREE.Texture();
+  loader.load('/textures/UV_Grid_Sm.jpg', (image) => {
+    texture.image = image;
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(15,15);
+    texture.needsUpdate = true;
+    groundMesh.material.map = texture;
+  });
   scene.add(groundMesh);
 
   renderer = new THREE.WebGLRenderer();
@@ -58,7 +63,7 @@ const onProgress = (xhr) => {
 };
 
 const loadObj = (objPath) => {
-  const loader = new THREE.OBJLoader();
+  const loader = new THREE.OBJLoader(manager);
   loader.load(objPath, (object) => {
     object.position.y = 0;
     controlledObj = object;
@@ -75,30 +80,49 @@ const loadObj = (objPath) => {
       }
     });
     controlledObj.material = material;
+
+    /* init self variables */
+    controlledObj.velocity = 0;
+    controlledObj.turn = 0;
+
+    /* create follow cam */
     object.add(camera);
+    camera.position.x = 0;
+    camera.position.y = 5;
+    camera.position.z = -10;
     scene.add(controlledObj);
+    camera.lookAt(controlledObj.position);
+
   }, onProgress, onError);
+};
+
+const applyControlTransforms = () => {
+  if( controlledObj.velocity > 0) {
+    controlledObj.rotateY(controlledObj.turn);
+  }
+  controlledObj.translateZ(controlledObj.velocity);
 };
 
 const render = () => {
   if(controlledObj) {
-    camera.position.x = 0;
-    camera.position.y = 5;
-    camera.position.z = -10;
-    camera.lookAt(controlledObj.position);
+    applyControlTransforms();
+    scene.updateMatrixWorld();
     renderer.render(scene, camera);
   }
 };
 
 const animateScene = () => {
-  setTimeout( function() {
+  setTimeout(() => {
     requestAnimationFrame(animateScene);
    }, 1000 / 30 );
   render();
 };
 
+const getControlObject = () => controlledObj;
+
 module.exports = {
   init: initialize,
   load: loadObj,
   animate: animateScene,
+  ctrlObj: getControlObject,
 };

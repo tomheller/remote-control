@@ -3,8 +3,24 @@
 const io = require('socket.io-client');
 const horn = require('./horn.js');
 const scene = require('./scene.js');
+const timers = {};
 let socket;
 
+let speedUpCounter;
+const speedUp = () => {
+  speedUpCounter++;
+  scene.ctrlObj().velocity = Math.min(1, scene.ctrlObj().velocity + 0.01);
+};
+
+let slowDownCounter;
+let breakVector = 0.02;
+const slowDown = () => {
+  slowDownCounter++;
+  scene.ctrlObj().velocity = Math.max(0, scene.ctrlObj().velocity - breakVector);
+  if(scene.ctrlObj().velocity === 0) {
+    clearInterval(timers.slow);
+  }
+}
 
 const attachListeners = () => {
   console.log('attach viewer');
@@ -22,8 +38,33 @@ const attachListeners = () => {
       case 'horn_end':
         horn.end();
         break;
+      case 'gas_start':
+        console.log('gas start');
+        speedUpCounter = 0;
+        timers.gas = setInterval(speedUp, 1000 / 30);
+        break;
+      case 'gas_end':
+        console.log('gas end');
+        slowDownCounter = 0;
+        clearInterval(timers.gas);
+        timers.slow = setInterval(slowDown, 1000 / 30);
+        break;
+      case 'break_start':
+        console.log('break end');
+        breakVector = 0.1;
+        break;
+      case 'break_end':
+        console.log('break end');
+        breakVector = 0.02;
+        break;
       default:
+    }
+  });
 
+  socket.on('orientationInput', (a) => {
+    let turn = a.beta;
+    if(scene.ctrlObj()) {
+      scene.ctrlObj().turn = (Math.PI / 180) * -(turn * 0.02);
     }
   });
 };

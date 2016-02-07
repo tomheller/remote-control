@@ -40,13 +40,11 @@ const attachButtonListeners = () => {
     sendEvent('controlSurfaceInput', 'gas_end');
   });
 
-  /*
   if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", (evt) => {
         sendEvent('orientationInput', {beta: evt.beta});
     }, true);
   }
-  */
 };
 
 const initialize = () => {
