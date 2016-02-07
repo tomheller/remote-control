@@ -23,10 +23,20 @@ const slowDown = () => {
 }
 
 const attachListeners = () => {
-  console.log('attach viewer');
   socket.emit('identify', {
     type: 'viewer',
     mappingID: window.mappingID,
+  });
+
+  socket.on('mappingDone', () => {
+    document.getElementById('qrcode').remove();
+    horn.init();
+    scene.init();
+    scene.load('/obj/rccar.obj');
+    scene.animate();
+    scene.onLoadFinish(() => {
+      document.getElementById('canvasRender').setAttribute('style', 'opacity: 1;')
+    });
   });
 
   socket.on('doAction', (a) => {
@@ -72,11 +82,6 @@ const initialize = () => {
   console.log('init viewer');
   socket = io(window.location.origin);
   socket.on('connect', () => attachListeners());
-  horn.init();
-
-  scene.init();
-  scene.load('/obj/rccar.obj');
-  scene.animate();
 };
 
 

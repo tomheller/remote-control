@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/:uuid', (req, res, next) => {
+router.get('/:mappingid', (req, res, next) => {
   res.render('remote', {
-    mappingID: req.params.uuid
+    mappingID: req.params.mappingid
   });
 });
 

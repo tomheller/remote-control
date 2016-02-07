@@ -10,6 +10,11 @@ const attachListeners = () => {
     type: 'remote',
     mappingID: window.mappingID,
   });
+
+  socket.on('mappingDone', () => {
+    console.log('mappingDone', 'attaching');
+    attachButtonListeners();
+  });
 };
 
 const sendEvent = (e, v) => {
@@ -42,7 +47,7 @@ const attachButtonListeners = () => {
 
   if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", (evt) => {
-        sendEvent('orientationInput', {beta: evt.beta});
+      sendEvent('orientationInput', {beta: evt.beta});
     }, true);
   }
 };
@@ -51,7 +56,6 @@ const initialize = () => {
   console.log('init remote');
   socket = io(window.location.origin);
   socket.on('connect', (soc) => attachListeners(soc));
-  attachButtonListeners();
 };
 
 

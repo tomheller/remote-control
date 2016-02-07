@@ -49,6 +49,7 @@ const initialize = () => {
 
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.domElement.id = "canvasRender";
   document.body.appendChild(renderer.domElement);
   attachListners();
 };
@@ -93,6 +94,9 @@ const loadObj = (objPath) => {
     scene.add(controlledObj);
     camera.lookAt(controlledObj.position);
 
+    if(onLoadCallback) {
+      onLoadCallback();
+    }
   }, onProgress, onError);
 };
 
@@ -120,9 +124,15 @@ const animateScene = () => {
 
 const getControlObject = () => controlledObj;
 
+let onLoadCallback;
+const onLoadFinish = (callback) => {
+  onLoadCallback = callback;
+};
+
 module.exports = {
   init: initialize,
   load: loadObj,
   animate: animateScene,
   ctrlObj: getControlObject,
+  onLoadFinish: onLoadFinish
 };
