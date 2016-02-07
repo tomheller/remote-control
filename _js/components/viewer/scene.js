@@ -74,7 +74,7 @@ const loadObj = (objPath) => {
       shininess: 33,
     });
 
-    controlledObj.traverse( function ( child ) {
+    controlledObj.traverse(child => {
       if (child instanceof THREE.Mesh) {
         child.material = material;
       }

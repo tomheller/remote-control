@@ -9,14 +9,14 @@ let socket;
 let speedUpCounter;
 const speedUp = () => {
   speedUpCounter++;
-  scene.ctrlObj().velocity = Math.min(1, scene.ctrlObj().velocity + 0.01);
+  scene.ctrlObj().velocity = Math.min(1, Math.max(0, scene.ctrlObj().velocity + 0.01));
 };
 
 let slowDownCounter;
 let breakVector = 0.02;
 const slowDown = () => {
   slowDownCounter++;
-  scene.ctrlObj().velocity = Math.max(0, scene.ctrlObj().velocity - breakVector);
+  scene.ctrlObj().velocity = Math.max(0, Math.min(scene.ctrlObj().velocity - breakVector, 1));
   if(scene.ctrlObj().velocity === 0) {
     clearInterval(timers.slow);
   }
@@ -24,7 +24,6 @@ const slowDown = () => {
 
 const attachListeners = () => {
   console.log('attach viewer');
-
   socket.emit('identify', {
     type: 'viewer',
     mappingID: 1,
@@ -50,8 +49,8 @@ const attachListeners = () => {
         timers.slow = setInterval(slowDown, 1000 / 30);
         break;
       case 'break_start':
-        console.log('break end');
-        breakVector = 0.1;
+        console.log('break start');
+        breakVector = 0.3;
         break;
       case 'break_end':
         console.log('break end');
