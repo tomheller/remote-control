@@ -26,7 +26,7 @@ const attachListeners = () => {
   console.log('attach viewer');
   socket.emit('identify', {
     type: 'viewer',
-    mappingID: 1,
+    mappingID: window.mappingID,
   });
 
   socket.on('doAction', (a) => {

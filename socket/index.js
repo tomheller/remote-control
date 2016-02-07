@@ -41,6 +41,10 @@ const attachListeners = (socket) => {
     var pairing = getPairing(socket.id);
     return socket.to(pairing.viewer).emit('orientationInput', e);
   });
+
+  socket.on('error', (e) => {
+    console.log(e);
+  });
 };
 
 const initSocket = (server) => {

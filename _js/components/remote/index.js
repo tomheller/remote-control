@@ -8,7 +8,7 @@ const attachListeners = () => {
   console.log('connected');
   socket.emit('identify', {
     type: 'remote',
-    mappingID: 1,
+    mappingID: window.mappingID,
   });
 };
 
