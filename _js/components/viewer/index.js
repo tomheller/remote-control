@@ -2,6 +2,7 @@
 
 const io = require('socket.io-client');
 const horn = require('./horn.js');
+const scene = require('./scene.js');
 let socket;
 
 
@@ -32,6 +33,10 @@ const initialize = () => {
   socket = io(window.location.origin);
   socket.on('connect', () => attachListeners());
   horn.init();
+
+  scene.init();
+  scene.load('/obj/rccar.obj');
+  scene.animate();
 };
 
 
