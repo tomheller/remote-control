@@ -4,7 +4,7 @@ var runSequence = require('run-sequence');
 gulp.task('default', ['scripts', 'styles']);
 
 gulp.task('build', function(done) {
-  runSequence(['scripts', 'styles'], done);
+  runSequence(['scripts', 'styles'], 'bundle', done);
 });
 
 gulp.task('dev', ['copy-components', 'scripts:watch', 'styles:watch', 'nodemon']);
