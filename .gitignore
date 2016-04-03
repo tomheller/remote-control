@@ -1,3 +1,4 @@
 node_modules
 public/javascripts/main.js
 public/stylesheets
+build/
