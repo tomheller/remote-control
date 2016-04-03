@@ -39,6 +39,7 @@
     "socket.io": "^1.4.4",
     "stylelint": "^3.2.3",
     "stylelint-config-wordpress": "^1.1.1",
+    "through2": "^2.0.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   }
