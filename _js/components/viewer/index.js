@@ -30,7 +30,7 @@ const attachListeners = () => {
 
   socket.on('mappingDone', () => {
     document.getElementById('qrcode').remove();
-    horn.init();
+    // horn.init();
     scene.init();
     scene.load('/obj/rccar.obj');
     scene.animate();
@@ -48,22 +48,22 @@ const attachListeners = () => {
         horn.end();
         break;
       case 'gas_start':
-        console.log('gas start');
+        // console.log('gas start');
         speedUpCounter = 0;
         timers.gas = setInterval(speedUp, 1000 / 30);
         break;
       case 'gas_end':
-        console.log('gas end');
+        // console.log('gas end');
         slowDownCounter = 0;
         clearInterval(timers.gas);
         timers.slow = setInterval(slowDown, 1000 / 30);
         break;
       case 'break_start':
-        console.log('break start');
+        // console.log('break start');
         breakVector = 0.3;
         break;
       case 'break_end':
-        console.log('break end');
+        // console.log('break end');
         breakVector = 0.02;
         break;
       default:
@@ -79,7 +79,7 @@ const attachListeners = () => {
 };
 
 const initialize = () => {
-  console.log('init viewer');
+  // console.log('init viewer');
   socket = io(window.location.origin);
   socket.on('connect', () => attachListeners());
 };

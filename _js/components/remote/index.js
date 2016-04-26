@@ -5,14 +5,14 @@ const controlSurfaces = {};
 let socket;
 
 const attachListeners = () => {
-  console.log('connected');
+  // console.log('connected');
   socket.emit('identify', {
     type: 'remote',
     mappingID: window.mappingID,
   });
 
   socket.on('mappingDone', () => {
-    console.log('mappingDone', 'attaching');
+    // console.log('mappingDone', 'attaching');
     attachButtonListeners();
   });
 };
@@ -53,7 +53,7 @@ const attachButtonListeners = () => {
 };
 
 const initialize = () => {
-  console.log('init remote');
+  // console.log('init remote');
   socket = io(window.location.origin);
   socket.on('connect', (soc) => attachListeners(soc));
 };

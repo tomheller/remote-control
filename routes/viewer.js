@@ -17,7 +17,7 @@ const getID = () => {
 
 router.get('/', (req, res, next) => {
   var id = getID();
-  var url = 'http://192.168.0.4:3000/remote/'+id;
+  var url = 'http://'+req.headers.host+'/remote/'+id;
   var base64 = qrcode.toDataURL(url, 4);
   res.render('viewer', {
     qr: base64,
